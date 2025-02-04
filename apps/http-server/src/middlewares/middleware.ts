@@ -4,24 +4,24 @@ import jwt from "jsonwebtoken";
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const header = req.headers.authorization;
-    const { email } = req.body;
+
     if (!header || !header.startsWith("Bearer ")) {
         res.status(400).json({ msg: "Invalid token!" });
         return
     }
 
     const token = header.split(" ")[1] ?? '';
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    if (typeof decoded === "string") return;
-    
-    if (decoded) {
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (!decoded) {
+            res.status(401).json({ msg: "Unauthorized!" });
+            return;
+        }
         // @ts-ignore
-        req.userId = decoded.id;
+        req.userId = decoded.userId;
         next();
-        return;
-    } else {
-        res.status(400).json({ msg: "Unauthorized!" });
+    } catch (error) {
+        res.status(401).json({ msg: "Unauthorized!" });
         return;
     }
 

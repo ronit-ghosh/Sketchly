@@ -15,9 +15,11 @@
     "@types/jsonwebtoken": "^9.0.7"
   },
   "dependencies": {
-    "@repo/types": "workspace:*",
     "@repo/common": "workspace:*",
     "@repo/db": "workspace:*",
+    "@repo/types": "workspace:*",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
