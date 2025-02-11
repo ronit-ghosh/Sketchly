@@ -9,6 +9,7 @@ router.post('/create', authMiddleware, async (req, res) => {
     // @ts-ignore
     const userId = req.userId;
     const name = req.body.name;
+
     const parsedValue = roomValidation.safeParse({ name });
     if (!parsedValue.success) {
         res.status(401).json({ msg: parsedValue.error.issues[0]?.message });
@@ -39,30 +40,30 @@ router.post('/create', authMiddleware, async (req, res) => {
     }
 });
 
-router.get("/:roomId", authMiddleware, async (req, res) => {
-    const roomId = Number(req.params.roomId);
+router.get("/roomId/:id", authMiddleware, async (req, res) => {
+    const roomId = Number(req.params.id);
     try {
-        const messages = await prisma.chat.findMany({
+        const messages = await prisma.shapes.findMany({
             where: { roomId },
-            take: 50,
-            orderBy: { id: "desc" }
+            orderBy: { id: "desc" },
         })
-        if (!messages) return;
+
         res.json({ messages });
     } catch (error) {
-        res.status(400).json({ msg: "Error while fetching room details!" });
+        res.status(400).json({ msg: "Error while fetching shapes!" });
     }
 });
 
-router.get("/:slug", authMiddleware, async (req, res) => {
-    const slug = req.params.slug;
+router.get("/slug", authMiddleware, async (req, res) => {
+    const slug = req.body.slug;
     try {
-        const room = await prisma.room.findFirst({
+        const room = await prisma.room.findUnique({
             where: { slug },
         });
         if (!room) return;
         res.json({ roomId: room.id });
     } catch (error) {
         res.status(400).json({ msg: "Error while fetching room details!" });
+        console.error(error)
     }
 });

@@ -14,3 +14,16 @@ export const signinValidation = z.object({
 export const roomValidation = z.object({
     name: z.string()
 })
+
+export const messageValidation = z.object({
+    shape_id: z.string(),
+    type: z.enum(["RECT", "CIRCLE"]),
+    width: z.number().optional(),
+    height: z.number().optional(),
+    radius: z.number().optional(),
+    top: z.number(),
+    left: z.number(),
+    angle: z.number().optional(),
+    fill: z.string().optional(),
+    stroke: z.string().default("#d3d3d3")
+})

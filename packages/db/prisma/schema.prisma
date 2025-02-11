@@ -23,13 +23,32 @@ model Room {
   adminId   String
   admin     User     @relation(fields: [adminId], references: [id])
   chats     Chat[]
+  shapes    Shapes[]
 }
 
 model Chat {
-  id      Int    @id @default(autoincrement())
-  message String
+  id      Int      @id @default(autoincrement())
+  message Shapes[]
   userId  String
-  user    User   @relation(fields: [userId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
   roomId  Int
-  room    Room   @relation(fields: [roomId], references: [id])
+  room    Room     @relation(fields: [roomId], references: [id])
+}
+
+model Shapes {
+  id       Int       @id @default(autoincrement())
+  shape_id String    @unique
+  type     String
+  width    Int?
+  height   Int?
+  radius   Int?
+  top      Int
+  left     Int
+  angle    Int?
+  fill     String?
+  stroke   String    @default("#d3d3d3")
+  chatId   Int
+  chat     Chat      @relation(fields: [chatId], references: [id])
+  Room     Room?     @relation(fields: [roomId], references: [id])
+  roomId   Int?
 }

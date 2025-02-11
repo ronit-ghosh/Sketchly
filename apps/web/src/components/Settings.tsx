@@ -2,6 +2,18 @@
 import { Canvas, FabricObject, TFiller } from 'fabric';
 import { ChangeEvent, useEffect, useState } from 'react';
 
+interface Shape {
+    type: string;
+    top: number;
+    left: number;
+    width?: number;
+    height?: number;
+    radius?: number;
+    angle?: number;
+    fill?: string | TFiller | null
+}
+
+
 const Settings = ({ canvas }: { canvas: Canvas | null }) => {
     const [selectedObject, setSelectedObject] = useState<FabricObject | null>(null)
     const [selectedObjects, setSelectedObjects] = useState<FabricObject[] | null>(null)
@@ -21,6 +33,7 @@ const Settings = ({ canvas }: { canvas: Canvas | null }) => {
         canvas.on("object:added", (e) => {
             handleObjectSelection(e.target)
         })
+
         canvas.on("object:modified", (e) => {
             handleObjectSelection(e.target)
         })
@@ -29,9 +42,7 @@ const Settings = ({ canvas }: { canvas: Canvas | null }) => {
             setSelectedObject(null)
             clearSettings()
         })
-
-
-
+        
     }, [canvas])
 
     const handleObjectSelection = (object: FabricObject | undefined) => {
@@ -92,7 +103,7 @@ const Settings = ({ canvas }: { canvas: Canvas | null }) => {
         const stringValue = e.target.value.replace(/,/g, "")
         const value = parseInt(stringValue, 10)
 
-        setWidth(value)
+        setRadius(value)
 
         if (selectedObject && selectedObject.type === 'circle' && value >= 0) {
             selectedObject.set({ radius: value / 2 / selectedObject.scaleX })
