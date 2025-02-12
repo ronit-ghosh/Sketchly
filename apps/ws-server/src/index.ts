@@ -58,32 +58,32 @@ wss.on("connection", (ws, request) => {
                 const roomId = data.roomId;
                 const message = typeof data.message === "string" ? JSON.parse(data.message) : data.message;
 
-                const { shape_id, type, width, height, radius, top, left, angle, fill } = message
-                const parsedValue = messageValidation.safeParse({ shape_id, type, width, height, radius, top, left, angle, fill })
-                if (!parsedValue.success) {
-                    console.log("😭😭😭" + parsedValue.error)
-                    return
-                }
+                // const { shape_id, type, width, height, radius, top, left, angle, fill } = message
+                // const parsedValue = messageValidation.safeParse({ shape_id, type, width, height, radius, top, left, angle, fill })
+                // if (!parsedValue.success) {
+                //     console.log("😭😭😭" + parsedValue.error)
+                //     return
+                // }
 
-                try {
-                    // TODO: send it to a queue and pipeline it db later
-                    await prisma.chat.create({
-                        data: {
-                            userId, roomId, message: {
-                                create: [message]
-                            }
+                // try {
+                //     // TODO: send it to a queue and pipeline it db later
+                //     await prisma.chat.create({
+                //         data: {
+                //             userId, roomId, message: {
+                //                 create: [message]
+                //             }
+                //         }
+                //     });
+
+                    users.forEach(user => {
+                        if (user.rooms.includes(roomId)) {
+                            // if(user.ws === ws) return
+                            user.ws.send(JSON.stringify({ type: "CHAT", roomId, message }));
                         }
-                    });
-
-                } catch (error) {
-                    console.error(error)
-                }
-
-                users.forEach(user => {
-                    if (user.rooms.includes(roomId)) {
-                        user.ws.send(JSON.stringify({ type: "CHAT", roomId, message }));
-                    }
-                })
+                    })
+                // } catch (error) {
+                //     console.error(error)
+                // }
             }
         } catch (error) {
             console.error(error)

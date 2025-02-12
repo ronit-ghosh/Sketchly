@@ -36,8 +36,8 @@ model Chat {
 }
 
 model Shapes {
-  id       Int       @id @default(autoincrement())
-  shape_id String    @unique
+  id       Int     @id @default(autoincrement())
+  shape_id String  @unique
   type     String
   width    Int?
   height   Int?
@@ -46,9 +46,9 @@ model Shapes {
   left     Int
   angle    Int?
   fill     String?
-  stroke   String    @default("#d3d3d3")
+  stroke   String  @default("#d3d3d3")
   chatId   Int
-  chat     Chat      @relation(fields: [chatId], references: [id])
-  Room     Room?     @relation(fields: [roomId], references: [id])
-  roomId   Int?
+  chat     Chat    @relation(fields: [chatId], references: [id])
+  Room     Room    @relation(fields: [roomId], references: [id])
+  roomId   Int
 }

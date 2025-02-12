@@ -45,10 +45,9 @@ router.get("/roomId/:id", authMiddleware, async (req, res) => {
     try {
         const messages = await prisma.shapes.findMany({
             where: { roomId },
-            orderBy: { id: "desc" },
         })
 
-        res.json({ messages });
+        res.json({ shapes: messages });
     } catch (error) {
         res.status(400).json({ msg: "Error while fetching shapes!" });
     }

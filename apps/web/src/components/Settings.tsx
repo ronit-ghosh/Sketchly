@@ -14,7 +14,7 @@ interface Shape {
 }
 
 
-const Settings = ({ canvas }: { canvas: Canvas | null }) => {
+const Settings = ({ canvas }: { canvas: Canvas }) => {
     const [selectedObject, setSelectedObject] = useState<FabricObject | null>(null)
     const [selectedObjects, setSelectedObjects] = useState<FabricObject[] | null>(null)
     const [width, setWidth] = useState<string | number | readonly string[] | undefined>();
